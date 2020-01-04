@@ -43,7 +43,7 @@ type ExtractorArgs struct {
 }
 ```
 
-
+```go
 type RedisConfig struct {
     Host             string
     Port             int
@@ -82,3 +82,7 @@ Mapping
 Prefix association
 
 ![](doc/prefix.png)
+
+Result
+
+![](doc/result.png)
