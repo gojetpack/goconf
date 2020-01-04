@@ -1,0 +1,15 @@
+# Redis config
+REDIS_HOST=127.0.0.1
+REDIS_PORT=6379
+REDIS_AUTH_TOKEN=dLF1cWgudN==
+
+# Mongo config
+MONGO_HOST=192.168.0.25
+MONGO_PORT=27017
+MONGO_DATABASE_NAME="vehicles"
+MONGO_TEST=true
+
+# Shared (Redis and Mongo)
+SECURE_CONNECTION=true
+
+
