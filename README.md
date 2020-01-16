@@ -43,6 +43,8 @@ type ExtractorArgs struct {
 }
 ```
 
+#### example 1
+
 ```go
 type RedisConfig struct {
     Host             string
@@ -86,3 +88,70 @@ Prefix association
 Result
 
 ![](doc/result.png)
+
+
+
+-----
+
+
+### support for command line arguments
+
+By default, the arguments must be in snake case (CMDArgsNameCaseType option)
+
+By default the precedence is as follows (EnvSourcePrecedence option)
+- Os env
+- ad
+
+Examples of valid arguments:
+- -boolean_flag -> parsed as "true"
+- boolean_flag_without_dash -> parsed as "true"
+- -this_is_an_arg_env=54321
+- --this_is_an_arg_and_os_env=CMD
+
+
+#### example 2
+
+```go
+os.Args = append(os.Args,
+    "-boolean_flag",
+    "boolean_flag_without_dash",
+    "-this_is_an_arg_env=54321",
+    "--this_is_an_arg_and_os_env=CMD",
+)
+
+type CustomAlias string
+
+type ConfigExample struct {
+    RegularConfigField       int         `env:"CRAZY_CONFIG_FIELD"`
+    FieldWithoutTag          string      // linked to  "FIELD_WITHOUT_TAG" env var
+    FieldWithChangedTag      bool        `env:"OTHER_CRAZY_NAME"`
+    CustomAliasTypeField     CustomAlias `env:"CUSTOM_ALIAS_TYPE_FIELD"`
+    BooleanFlag              bool
+    BooleanFlagWithoutDash   bool
+    ThisIsAnArgEnv           int
+    ThisIsAnArgAndOsEnv      string
+    IAmAnNonExistentVariable string
+}
+
+config := ConfigExample{}
+args := ExtractorArgs{
+    Options: ExtractorOptions{
+        EnvFile:       "testdata/env_test",
+        OmitNotTagged: false,
+        EnvSourcePrecedence: []envSource{
+            CMDArgs,
+            OSEnv,
+        },
+    },
+    Configs: []interface{}{&config, ""}, // Empty prefix
+}
+err := Extract(args)
+if err != nil {
+    fmt.Print(err)
+    return
+}
+fmt.Print(config)
+// Output: {1 Avengers: end game true Garfield: the mad cat true true 54321 CMD }
+```
+#### result
+![](doc/map2.png)
