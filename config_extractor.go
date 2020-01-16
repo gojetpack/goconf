@@ -101,6 +101,20 @@ func isValidVarStartName(r rune) bool {
 	return unicode.IsLetter(r) || unicode.IsDigit(r) || r == '_'
 }
 
+func removeQuotes(val string) string {
+	startIdx := 0
+	endIdx := len(val)
+	if val[0] == '\'' || val[0] == '"' {
+		startIdx = 1
+	}
+	if val[len(val)-1] == '\'' || val[len(val)-1] == '"' {
+		if endIdx > 1 {
+			endIdx = len(val) - 1
+		}
+	}
+	return val[startIdx:endIdx]
+}
+
 func getEnvValFromCMDArgs(envName string, args []string) string {
 	if args == nil || len(args) < 2 {
 		return ""
@@ -126,7 +140,7 @@ func getEnvValFromCMDArgs(envName string, args []string) string {
 					continue
 				}
 				if len(spArgs) > 1 {
-					return spArgs[1]
+					return removeQuotes(spArgs[1])
 				} else {
 					return unsetDefaultValue
 				}

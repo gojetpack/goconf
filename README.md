@@ -107,6 +107,7 @@ Examples of valid arguments:
 - boolean_flag_without_dash -> parsed as "true"
 - -this_is_an_arg_env=54321
 - --this_is_an_arg_and_os_env=CMD
+- --with_quotes="base64==",
 
 
 #### example 2

@@ -94,6 +94,7 @@ func ExampleExtract() {
 		"boolean_flag_without_dash",
 		"-this_is_an_arg_env=54321",
 		"--this_is_an_arg_and_os_env=CMD",
+		"--with_quotes=\"base64==\"",
 	)
 
 	type CustomAlias string
@@ -108,6 +109,7 @@ func ExampleExtract() {
 		ThisIsAnArgEnv           int
 		ThisIsAnArgAndOsEnv      string // Por precedencia se toma el arg cmd
 		IAmAnNonExistentVariable string
+		WithQuotes               string
 	}
 
 	config := ConfigExample{}
@@ -128,7 +130,7 @@ func ExampleExtract() {
 		return
 	}
 	fmt.Print(config)
-	// Output: {1 Avengers: end game true Garfield: the mad cat true true 54321 CMD }
+	// Output: {1 Avengers: end game true Garfield: the mad cat true true 54321 CMD  base64==}
 }
 
 func ExampleExtractWithPrefix() {
